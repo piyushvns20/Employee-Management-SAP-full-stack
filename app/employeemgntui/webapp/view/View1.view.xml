@@ -1,0 +1,95 @@
+<mvc:View controllerName="employeemgntui.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+        <content>
+            <Table id="employeeTable"
+                growing="true"
+                growingThreshold="20"
+                growingScrollToLoad="true"
+                sticky="ColumnHeaders,HeaderToolbar"
+                noDataText="{i18n>noEmployees}"
+                updateFinished=".onUpdateFinished"
+                items="{
+                    path: '/Employees',
+                    parameters: {
+                        $count: true,
+                        $orderby: 'employeeCode',
+                        $$updateGroupId: 'employeeGroup'
+                    }
+                }">
+                <headerToolbar>
+                    <OverflowToolbar id="employeeToolbar">
+                        <Title id="employeeTableTitle" text="{view>/tableTitle}" level="H2"/>
+                        <ToolbarSpacer id="toolbarSpacer"/>
+                        <SearchField id="employeeSearch"
+                            width="18rem"
+                            placeholder="{i18n>searchPlaceholder}"
+                            search=".onSearch"
+                            liveChange=".onSearch"/>
+                        <Button id="addButton"
+                            text="{i18n>add}"
+                            icon="sap-icon://add"
+                            type="Emphasized"
+                            press=".onAdd"/>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column id="colCode" width="7rem">
+                        <Text id="colCodeText" text="{i18n>employeeCode}"/>
+                    </Column>
+                    <Column id="colName">
+                        <Text id="colNameText" text="{i18n>name}"/>
+                    </Column>
+                    <Column id="colDepartment" minScreenWidth="Tablet" demandPopin="true">
+                        <Text id="colDepartmentText" text="{i18n>department}"/>
+                    </Column>
+                    <Column id="colManager" minScreenWidth="Desktop" demandPopin="true">
+                        <Text id="colManagerText" text="{i18n>manager}"/>
+                    </Column>
+                    <Column id="colHireDate" minScreenWidth="Desktop" demandPopin="true">
+                        <Text id="colHireDateText" text="{i18n>hireDate}"/>
+                    </Column>
+                    <Column id="colSalary" hAlign="End" minScreenWidth="Tablet" demandPopin="true">
+                        <Text id="colSalaryText" text="{i18n>salary}"/>
+                    </Column>
+                    <Column id="colStatus" width="7rem">
+                        <Text id="colStatusText" text="{i18n>status}"/>
+                    </Column>
+                    <Column id="colActions" width="6rem" hAlign="End">
+                        <Text id="colActionsText" text=""/>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem id="employeeItem" type="Active" press=".onEdit">
+                        <cells>
+                            <Text id="cellCode" text="{employeeCode}"/>
+                            <ObjectIdentifier id="cellName"
+                                title="{firstName} {lastName}"
+                                text="{designation}"/>
+                            <Text id="cellDepartment" text="{department/name}"/>
+                            <Text id="cellManager" text="{manager/firstName} {manager/lastName}"/>
+                            <Text id="cellHireDate" text="{hireDate}"/>
+                            <ObjectNumber id="cellSalary" number="{salary}"/>
+                            <ObjectStatus id="cellStatus"
+                                text="{status}"
+                                state="{path: 'status', formatter: '.formatStatusState'}"/>
+                            <HBox id="cellActions" justifyContent="End">
+                                <Button id="editButton"
+                                    icon="sap-icon://edit"
+                                    type="Transparent"
+                                    tooltip="{i18n>edit}"
+                                    press=".onEdit"/>
+                                <Button id="deleteButton"
+                                    icon="sap-icon://delete"
+                                    type="Transparent"
+                                    tooltip="{i18n>delete}"
+                                    press=".onDelete"/>
+                            </HBox>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Page>
+</mvc:View>

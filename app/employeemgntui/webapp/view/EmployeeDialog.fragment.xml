@@ -1,0 +1,68 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form">
+    <Dialog id="employeeDialog"
+        title="{view>/dialogTitle}"
+        contentWidth="40rem"
+        resizable="true"
+        draggable="true"
+        afterClose=".onDialogAfterClose">
+        <content>
+            <form:SimpleForm id="employeeForm"
+                editable="true"
+                layout="ColumnLayout"
+                columnsM="2"
+                columnsL="2"
+                columnsXL="2">
+                <form:content>
+                    <core:Title id="titlePersonal" text="{i18n>personalData}"/>
+                    <Label id="lblCode" text="{i18n>employeeCode}" required="true" labelFor="inpCode"/>
+                    <Input id="inpCode" value="{employeeCode}"/>
+                    <Label id="lblFirstName" text="{i18n>firstName}" required="true" labelFor="inpFirstName"/>
+                    <Input id="inpFirstName" value="{firstName}"/>
+                    <Label id="lblLastName" text="{i18n>lastName}" required="true" labelFor="inpLastName"/>
+                    <Input id="inpLastName" value="{lastName}"/>
+                    <Label id="lblEmail" text="{i18n>email}" required="true" labelFor="inpEmail"/>
+                    <Input id="inpEmail" value="{email}" type="Email"/>
+                    <Label id="lblPhone" text="{i18n>phone}" labelFor="inpPhone"/>
+                    <Input id="inpPhone" value="{phone}" type="Tel"/>
+                    <Label id="lblDob" text="{i18n>dateOfBirth}" labelFor="dpDob"/>
+                    <DatePicker id="dpDob" value="{dateOfBirth}"/>
+
+                    <core:Title id="titleJob" text="{i18n>jobData}"/>
+                    <Label id="lblHireDate" text="{i18n>hireDate}" required="true" labelFor="dpHireDate"/>
+                    <DatePicker id="dpHireDate" value="{hireDate}"/>
+                    <Label id="lblDesignation" text="{i18n>designation}" labelFor="inpDesignation"/>
+                    <Input id="inpDesignation" value="{designation}"/>
+                    <Label id="lblDepartment" text="{i18n>department}" labelFor="cbDepartment"/>
+                    <ComboBox id="cbDepartment"
+                        selectedKey="{department_ID}"
+                        items="{path: '/Departments', parameters: {$orderby: 'name'}, templateShareable: false}">
+                        <core:Item id="departmentItem" key="{ID}" text="{name}"/>
+                    </ComboBox>
+                    <Label id="lblManager" text="{i18n>manager}" labelFor="cbManager"/>
+                    <ComboBox id="cbManager"
+                        selectedKey="{manager_ID}"
+                        items="{path: '/Employees', parameters: {$orderby: 'firstName'}, templateShareable: false}">
+                        <core:Item id="managerItem" key="{ID}" text="{firstName} {lastName}"/>
+                    </ComboBox>
+                    <Label id="lblSalary" text="{i18n>salary}" labelFor="inpSalary"/>
+                    <Input id="inpSalary" value="{salary}"/>
+                    <Label id="lblStatus" text="{i18n>status}" labelFor="selStatus"/>
+                    <Select id="selStatus" selectedKey="{status}">
+                        <core:Item id="statusActive" key="Active" text="{i18n>statusActive}"/>
+                        <core:Item id="statusInactive" key="Inactive" text="{i18n>statusInactive}"/>
+                        <core:Item id="statusTerminated" key="Terminated" text="{i18n>statusTerminated}"/>
+                    </Select>
+                </form:content>
+            </form:SimpleForm>
+        </content>
+        <beginButton>
+            <Button id="saveButton" text="{i18n>save}" type="Emphasized" press=".onSave"/>
+        </beginButton>
+        <endButton>
+            <Button id="cancelButton" text="{i18n>cancel}" press=".onCancel"/>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

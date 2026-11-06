@@ -1,0 +1,23 @@
+{
+  "Component-preload.js.map": 1792662690344,
+  "controller/View1.controller.js": 1792575051061,
+  "controller/App.controller.js": 1792574685550,
+  "model/models.js": 1792574685550,
+  "Component.js": 1792574685542,
+  "controller/View1-dbg.controller.js": 1792575051061,
+  "controller/View1.controller.js.map": 1792662690266,
+  "controller/App-dbg.controller.js": 1792574685550,
+  "controller/App.controller.js.map": 1792662690254,
+  "model/models-dbg.js": 1792574685550,
+  "model/models.js.map": 1792662690254,
+  "Component-dbg.js": 1792574685542,
+  "Component.js.map": 1792662690253,
+  "Component-preload.js": 1792662690344,
+  "manifest.json": 1792652117510,
+  "view/View1.view.xml": 1792574999836,
+  "view/EmployeeDialog.fragment.xml": 1792575001348,
+  "view/App.view.xml": 1792574685554,
+  "i18n/i18n.properties": 1792575004608,
+  "css/style.css": 1792574685554,
+  "index.html": 1792575018948
+}

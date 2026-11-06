@@ -1,0 +1,59 @@
+{
+  "xsappname": "EmployeeManagement",
+  "tenant-mode": "dedicated",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.Viewer",
+      "description": "Read employees and departments"
+    },
+    {
+      "name": "$XSAPPNAME.Admin",
+      "description": "Create, update and delete employees and departments"
+    },
+    {
+      "name": "$XSAPPNAME.Viewer",
+      "description": "Viewer"
+    },
+    {
+      "name": "$XSAPPNAME.Admin",
+      "description": "Admin"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "Viewer",
+      "description": "Read-only access",
+      "scope-references": [
+        "$XSAPPNAME.Viewer"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Admin",
+      "description": "Full access",
+      "scope-references": [
+        "$XSAPPNAME.Admin",
+        "$XSAPPNAME.Viewer"
+      ],
+      "attribute-references": []
+    }
+  ],
+  "role-collections": [
+    {
+      "name": "EmployeeMgmt_Viewer",
+      "description": "Employee Management - read-only",
+      "role-template-references": [
+        "$XSAPPNAME.Viewer"
+      ]
+    },
+    {
+      "name": "EmployeeMgmt_Admin",
+      "description": "Employee Management - full access",
+      "role-template-references": [
+        "$XSAPPNAME.Admin"
+      ]
+    }
+  ],
+  "authorities-inheritance": false
+}

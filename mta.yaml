@@ -1,0 +1,160 @@
+_schema-version: 3.3.0
+ID: EmployeeManagement
+description: A simple CAP project.
+version: 1.0.0
+modules:
+  - name: EmployeeManagement-srv
+    type: nodejs
+    path: gen/srv
+    requires:
+      - name: EmployeeManagement-auth
+      - name: EmployeeManagement-db
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+    parameters:
+      buildpack: nodejs_buildpack
+      instances: 1
+    build-parameters:
+      builder: npm-ci
+  - name: EmployeeManagement-db-deployer
+    type: hdb
+    path: gen/db
+    requires:
+      - name: EmployeeManagement-db
+    parameters:
+      buildpack: nodejs_buildpack
+  - name: EmployeeManagement-app-deployer
+    type: com.sap.application.content
+    path: gen
+    requires:
+      - name: EmployeeManagement-html5-repo-host
+        parameters:
+          content-target: true
+          config:
+            HTML5Runtime_enabled: true
+      - name: EmployeeManagement-auth
+    build-parameters:
+      build-result: app/
+      requires:
+        - artifacts:
+            - employeemgntui.zip
+          name: employeemgntui
+          target-path: app/
+  - name: EmployeeManagement-destination-content
+    type: com.sap.application.content
+    requires:
+      - name: EmployeeManagement-destination-service
+        parameters:
+          content-target: true
+      - name: EmployeeManagement-html5-repo-host
+        parameters:
+          service-key:
+            name: EmployeeManagement-html5-repo-host-key
+      - name: EmployeeManagement-auth
+        parameters:
+          service-key:
+            name: EmployeeManagement-auth-key
+    parameters:
+      content:
+        instance:
+          destinations:
+            - Name: employeemanagement_EmployeeManagement_html_repo_host
+              ServiceInstanceName: EmployeeManagement-html5-repo-host
+              ServiceKeyName: EmployeeManagement-html5-repo-host-key
+              sap.cloud.service: employeemanagement
+            - Name: employeemanagement_EmployeeManagement_auth
+              Authentication: OAuth2UserTokenExchange
+              ServiceInstanceName: EmployeeManagement-auth
+              ServiceKeyName: EmployeeManagement-auth-key
+              sap.cloud.service: employeemanagement
+          existing_destinations_policy: update
+    build-parameters:
+      no-source: true
+  - name: employeemgntui
+    type: html5
+    path: app/employeemgntui
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms:
+        []
+
+  - name: EmployeeManagementemployeemgntui
+    type: html5
+    path: app/employeemgntui
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm ci
+        - npm run build
+      supported-platforms:
+        []
+resources:
+  - name: EmployeeManagement-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        oauth2-configuration:
+          credential-types:
+            - binding-secret
+            - x509
+          redirect-uris:
+            - https://*.hana.ondemand.com/**
+            - https://*.applicationstudio.cloud.sap/**
+        tenant-mode: dedicated
+        xsappname: EmployeeManagement-${org}-${space}
+      path: ./xs-security.json
+      service: xsuaa
+      service-plan: application
+  - name: EmployeeManagement-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+  - name: EmployeeManagement-html5-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
+  - name: EmployeeManagement-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        HTML5Runtime_enabled: true
+        init_data:
+          instance:
+            destinations:
+              - Authentication: NoAuthentication
+                Name: EmployeeManagement-srv-api
+                ProxyType: Internet
+                Type: HTTP
+                URL: ~{srv-api/srv-url}
+                HTML5.DynamicDestination: true
+                HTML5.ForwardAuthToken: true
+              - Authentication: NoAuthentication
+                Name: ui5
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://ui5.sap.com
+            existing_destinations_policy: update
+        version: 1.0.0
+      service: destination
+      service-name: EmployeeManagement-destination-service
+      service-plan: lite
+    requires:
+      - name: srv-api
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production

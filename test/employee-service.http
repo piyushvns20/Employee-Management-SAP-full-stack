@@ -1,0 +1,61 @@
+@server = http://localhost:4004
+@base = {{server}}/odata/v4/employee
+
+### List employees with department and manager
+GET {{base}}/Employees?$expand=department($select=name),manager($select=firstName,lastName)
+
+### Read one employee
+GET {{base}}/Employees(e1a1e7a0-0002-4c1a-9a01-000000000002)
+
+### Create employee
+POST {{base}}/Employees
+Content-Type: application/json
+
+{
+  "employeeCode": "EMP005",
+  "firstName": "Neha",
+  "lastName": "Gupta",
+  "email": "neha.gupta@example.com",
+  "phone": "+91-9800000005",
+  "dateOfBirth": "1995-07-18",
+  "hireDate": "2024-02-01",
+  "designation": "Software Engineer",
+  "salary": 100000,
+  "department_ID": "d1a1e7a0-0001-4c1a-9a01-000000000001",
+  "manager_ID": "e1a1e7a0-0002-4c1a-9a01-000000000001"
+}
+
+### Update employee (partial)
+PATCH {{base}}/Employees(e1a1e7a0-0002-4c1a-9a01-000000000002)
+Content-Type: application/json
+
+{
+  "designation": "Senior Software Engineer",
+  "salary": 150000
+}
+
+### Delete employee
+DELETE {{base}}/Employees(e1a1e7a0-0002-4c1a-9a01-000000000002)
+
+### List departments with employees
+GET {{base}}/Departments?$expand=employees($select=employeeCode,firstName,lastName)
+
+### Create department
+POST {{base}}/Departments
+Content-Type: application/json
+
+{
+  "name": "Sales",
+  "description": "Sales and business development"
+}
+
+### Update department
+PATCH {{base}}/Departments(d1a1e7a0-0001-4c1a-9a01-000000000002)
+Content-Type: application/json
+
+{
+  "description": "People operations"
+}
+
+### Delete department (rejected with 409 while it has employees)
+DELETE {{base}}/Departments(d1a1e7a0-0001-4c1a-9a01-000000000003)

@@ -1,0 +1,5 @@
+ID;employeeCode;firstName;lastName;email;phone;dateOfBirth;hireDate;designation;salary;status;department_ID;manager_ID
+e1a1e7a0-0002-4c1a-9a01-000000000001;EMP001;Anita;Sharma;anita.sharma@example.com;+91-9800000001;1985-04-12;2015-06-01;Engineering Manager;250000.00;Active;d1a1e7a0-0001-4c1a-9a01-000000000001;
+e1a1e7a0-0002-4c1a-9a01-000000000002;EMP002;Rahul;Mehta;rahul.mehta@example.com;+91-9800000002;1992-09-23;2019-01-15;Software Engineer;120000.00;Active;d1a1e7a0-0001-4c1a-9a01-000000000001;e1a1e7a0-0002-4c1a-9a01-000000000001
+e1a1e7a0-0002-4c1a-9a01-000000000003;EMP003;Priya;Nair;priya.nair@example.com;+91-9800000003;1990-02-05;2018-03-10;HR Executive;90000.00;Active;d1a1e7a0-0001-4c1a-9a01-000000000002;
+e1a1e7a0-0002-4c1a-9a01-000000000004;EMP004;Vikram;Singh;vikram.singh@example.com;+91-9800000004;1988-11-30;2016-08-22;Finance Analyst;110000.00;Inactive;d1a1e7a0-0001-4c1a-9a01-000000000003;
